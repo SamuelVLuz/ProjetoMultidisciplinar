@@ -1,0 +1,229 @@
+@font-face {
+    font-family: "CenturyGothic";
+    src: local("CenturyGothic"),
+    url('../fonts/CenturyGothic.ttf') format("truetype");
+}
+
+@font-face {
+    font-family: "CenturyGothicBold";
+    src: local("CenturyGothic"),
+    url('../fonts/century-gothic-bold.ttf') format("truetype");
+}
+
+@font-face {
+    font-family: "Museo900";
+    src: local("Museo900"),
+    url('../fonts/Museo 900.otf') format("truetype");
+}
+
+:root {
+    --rc-cyan: #3ABBC6;
+    --rc-gray: #C5C5C5;
+    --rc-answer-font-size: 17px;
+    --rc-border-radius: 4px;
+    --rc-card-border-radius: 10px;
+
+    --pf-global--primary-color--100: #7DCD52;
+    --pf-global--primary-color--200: #70b849;
+
+    --pf-c-form__label--FontSize: 14px;
+    --pf-c-form__label-text--FontWeight: bold;
+
+    --pf-c-radio__label--FontSize: var(--rc-answer-font-size);
+    --pf-global--FontSize--md: var(--rc-answer-font-size);
+
+    --pf-global--BorderColor--300: var(--rc-gray);
+    --pf-c-button--m-control--after--BorderBottomColor: #7DCD52;
+}
+
+body {
+    font-family: CenturyGothic, serif;
+    color: #707070;
+}
+
+.login-pf body {
+    background: none;
+}
+
+.login-pf-page {
+    padding-top: 0;
+}
+
+@media (max-width: 768px) {
+    #kc-info {
+        margin: 1rem 0 0 0;
+    }
+}
+
+.pf-c-form__label-text {
+    color: #3ABBC6;
+}
+
+.pf-c-form-control {
+    --pf-c-form-control--BorderRadius: var(--rc-border-radius);
+    --pf-c-form-control--BorderBottomColor: var(--pf-global--BorderColor--300);
+    --pf-c-form-control--hover--BorderBottomColor: var(--pf-global--primary-color--200);
+    --pf-c-form-control--Height: 48px;
+}
+
+.pf-c-button {
+    border-radius: var(--rc-border-radius);
+    --pf-c-button--FontWeight: bold;
+}
+
+#kc-header-wrapper {
+    font-weight: bold;
+    color: var(--rc-gray);
+}
+
+h1#kc-page-title {
+    font-family: Museo900, serif;
+    font-weight: bolder;
+    font-size: 28px;
+    color: var(--pf-global--primary-color--100);
+}
+
+#cpf-hint {
+	font-family: CenturyGothicBold, serif;
+	font-weight: normal;
+	font-size: 18px;
+	color: var(--pf-global--primary-color--100);
+}
+
+.continue-with-hint {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 0;
+	color: #616464;
+	font-size: 16px;
+	margin-bottom: 20px;
+	border: none;
+	background: none;
+	width: 100%;
+	padding: 0;
+}
+
+#other-user-btn:hover {
+	color: white;
+}
+
+.continue-with-hint:hover {
+	color: var(--rc-gray);
+}
+
+.continue-with-hint .arrow {
+	font-family: CenturyGothicBold, serif;
+}
+
+.card-pf {
+    border-radius: var(--rc-card-border-radius);
+}
+
+.card-pf #kc-info-wrapper {
+    border-bottom-right-radius: var(--rc-card-border-radius);
+    border-bottom-left-radius: var(--rc-card-border-radius);
+    position: relative;
+}
+
+.card-pf #kc-info-wrapper:has(.form-alternative-link) {
+    padding: 0;
+}
+
+.rc-capitalize {
+    text-transform: capitalize;
+}
+
+#rc-header {
+    height: 100px;
+    padding: 0 10%;
+    background-color: #F8F9FA;
+    box-shadow: 0px 3px 6px #00000029;
+    display: flex;
+    align-items: center;
+}
+
+.rc-navbar-brand img {
+    width: 123px;
+}
+
+#rc-page {
+    min-height: 75vh;
+}
+
+.cancel-button {
+    background-color: rgb(225, 0, 0) !important;
+}
+.cancel-button:hover {
+    background-color: rgb(192, 0, 0) !important;
+}
+
+.password-container {
+    display: flex;
+    align-items: center;
+}
+
+.password-container input {
+    flex: 1;
+}
+
+.password-container button {
+    flex-shrink: 0;
+}
+
+.pf-c-alert {
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+}
+
+.pf-c-button.pf-m-control::after {
+    border-radius: 4px;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-left: 0px;
+}
+
+.pf-c-button.pf-m-control {
+    --pf-c-button--m-control--hover--after--BorderBottomColor: var(--pf-global--primary-color--200);
+    --pf-c-button--m-control--active--after--BorderBottomColor: var(--pf-global--primary-color--200);
+    --pf-c-button--m-control--focus--after--BorderBottomColor: var(--pf-global--primary-color--200);
+    --pf-c-button--BorderRadius: 4px;
+    height: 48px;
+    color: #707070;
+    border: none;
+}
+
+.form-alternative-link {
+    display: flex;
+    justify-content: center;
+    margin-top: 1.5rem;
+}
+
+.alternative-link {
+    vertical-align: -10%;
+}
+
+.kc-tooltip-text {
+    min-width: unset !important;
+    font-size: 13px;
+    margin: 0;
+}
+
+.alternative-link i:has(+ span) {
+    margin-right: 0.35rem;
+}
+
+.alternative-link span + i {
+    margin-left: 0.35rem;
+}
+
+.select-auth-box-icon {
+    align-items: center;
+}
+
+.select-auth-box-arrow {
+    margin-left: 0.5rem;
+}
+
+.fa.fa-id-badge.fa-2x {
+    font-size: 2.5em;
+}

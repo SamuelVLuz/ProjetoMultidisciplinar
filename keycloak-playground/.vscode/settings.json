@@ -1,0 +1,36 @@
+
+{
+    "java.format.settings.url": ".vscode/java-formatter.xml",
+    "editor.comments.insertSpace": true,
+    "[java]": {
+        "editor.detectIndentation": false,
+        "editor.formatOnSave": true
+    },
+    "python.analysis.extraPaths": [
+        "./submodules/services/front-end",
+        "./submodules/services/immutable-storage-registry",
+        "./submodules/services/pki",
+        "./submodules/services/document-verifier",
+        "./submodules/utils/kkmip",
+        "./submodules/utils/python-common",
+        "./submodules/utils/python-oid"
+    ],
+    "python.analysis.ignore": [
+        "./submodules/utils/kkmip/examples",
+        "./submodules/utils/kkmip/test",
+        "./rnp/satosa/app"
+    ],
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.black-formatter",
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        },
+    },
+    "black-formatter.path": ["black"],
+    "black-formatter.args": [
+        "--config",
+        "pyproject.toml"
+    ],
+    "java.configuration.updateBuildConfiguration": "automatic"
+}

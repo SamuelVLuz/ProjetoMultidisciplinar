@@ -1,0 +1,8 @@
+com.labsec.keycloak.dynamic_reg_auth.DynamicRegistrationUsernameFormFactory
+com.labsec.keycloak.email_reg_auth.EMailRegistrationAndAuthenticationFactory
+com.labsec.keycloak.facial_biometrics.BiometricAuthenticatorFactory
+com.labsec.keycloak.sms_reg_auth.PhoneNumberRegistrationAndAuthenticationFactory
+com.labsec.keycloak.try_another_second_factor.TryAnotherRedirectFactory
+com.labsec.keycloak.conditional_user_loa.ConditionalUserLOAFactory
+com.labsec.keycloak.register_password.RegisterPasswordFactory
+com.labsec.keycloak.loa_reduction.LoAReductionAuthenticatorFactory

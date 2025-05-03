@@ -1,0 +1,869 @@
+{
+    "realm": "Playground",
+    "displayName": "Keycloak Playground",
+    "attributes": {
+        "userProfileEnabled": true,
+        "acr.loa.map": "{\"urn:idrc:loa:baixo\":\"1\",\"urn:idrc:loa:substancial\":\"100\",\"urn:idrc:loa:alto\":\"200\"}"
+    },
+    "registrationAllowed": true,
+    "registrationEmailAsUsername": false,
+    "rememberMe": false,
+    "verifyEmail": false,
+    "loginWithEmailAllowed": false,
+    "duplicateEmailsAllowed": false,
+    "resetPasswordAllowed": true,
+    "editUsernameAllowed": false,
+    "enabled": true,
+    "browserFlow": "Playground Authentication Flow",
+    "registrationFlow": "Playground Registration Flow",
+    "resetCredentialsFlow": "Playground Reset Flow",
+    "loginTheme" : "registrocivil",
+    "smtpServer" : {
+        "replyToDisplayName" : "",
+        "starttls" : "false",
+        "ssl" : "false",
+        "port" : "$(env:MAIL_SMTP_PORT)",
+        "host" : "$(env:MAIL_SMTP_HOST)",
+        "from" : "$(env:MAIL_SMTP_FROM)",
+        "fromDisplayName" : "Keycloak Playground"
+    },
+    "internationalizationEnabled": true,
+    "supportedLocales": [ "pt-BR" ],
+    "defaultLocale": "pt-BR",
+    "clientScopes": [ {
+        "name": "acr",
+        "description": "OpenID Connect scope for add acr (authentication context class reference) to the token",
+        "protocol": "openid-connect",
+        "attributes": {
+            "include.in.token.scope": "false",
+            "display.on.consent.screen": "false"
+        },
+        "protocolMappers": [ {
+            "name": "acr loa level",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-acr-mapper",
+            "consentRequired": false,
+            "config": {
+                "id.token.claim": "true",
+                "introspection.token.claim": "true",
+                "access.token.claim": "true"
+            }
+        }, {
+            "name": "amr",
+            "protocol": "openid-connect",
+            "protocolMapper": "oidc-amr-mapper",
+            "consentRequired": false,
+            "config": {
+                "id.token.claim": "true",
+                "lightweight.claim": "true",
+                "access.token.claim": "true"
+            }
+        } ]
+    } ],
+    "authenticationFlows": [ {
+        "alias": "Playground Authentication Flow",
+        "description": "Browser based authentication",
+        "providerId": "basic-flow",
+        "topLevel": true,
+        "builtIn": false,
+        "authenticationExecutions": [ {
+            "authenticator": "auth-cookie",
+            "authenticatorFlow": false,
+            "requirement": "ALTERNATIVE",
+            "priority": 1,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        }, {
+            "authenticator": "identity-provider-redirector",
+            "authenticatorFlow": false,
+            "requirement": "ALTERNATIVE",
+            "priority": 2,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        }, {
+            "authenticatorFlow": true,
+            "requirement": "ALTERNATIVE",
+            "priority": 3,
+            "autheticatorFlow": true,
+            "flowAlias": "Playground Authentication Flow forms",
+            "userSetupAllowed": false
+        } ]
+    }, {
+        "alias": "Playground Authentication Flow forms",
+        "description": "Username, password, otp and other auth forms.",
+        "providerId": "basic-flow",
+        "topLevel": false,
+        "builtIn": false,
+        "authenticationExecutions": [ {
+            "authenticator": "dynamic-reg-auth",
+            "authenticatorFlow": false,
+            "requirement": "REQUIRED",
+            "priority": 1,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        }, {
+            "authenticatorConfig": "password-authentication",
+            "authenticator": "auth-password-form",
+            "authenticatorFlow": false,
+            "requirement": "REQUIRED",
+            "priority": 2,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        }, {
+            "authenticatorFlow": true,
+            "requirement": "CONDITIONAL",
+            "priority": 3,
+            "autheticatorFlow": true,
+            "flowAlias": "LoA BAIXO",
+            "userSetupAllowed": false
+        }, {
+            "authenticatorFlow": true,
+            "requirement": "CONDITIONAL",
+            "priority": 4,
+            "autheticatorFlow": true,
+            "flowAlias": "LoA ALTO",
+            "userSetupAllowed": false
+        }, {
+            "authenticatorFlow": true,
+            "requirement": "CONDITIONAL",
+            "priority": 5,
+            "autheticatorFlow": true,
+            "flowAlias": "LoA SUBSTANCIAL",
+            "userSetupAllowed": false
+        } ]
+    }, {
+        "alias": "LoA BAIXO",
+        "description": "Fluxo de autenticação cujo LoA solicitado foi BAIXO",
+        "providerId": "basic-flow",
+        "topLevel": false,
+        "builtIn": false,
+        "authenticationExecutions": [ {
+            "authenticatorConfig": "conditional-loa-baixo",
+            "authenticator": "conditional-level-of-authentication",
+            "authenticatorFlow": false,
+            "requirement": "REQUIRED",
+            "priority": 1,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        }, {
+            "authenticator": "allow-access-authenticator",
+            "authenticatorFlow": false,
+            "requirement": "REQUIRED",
+            "priority": 2,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        } ]
+    }, {
+        "alias": "LoA SUBSTANCIAL",
+        "description": "Fluxo de autenticação cujo LoA solicitado foi SUBSTANCIAL",
+        "providerId": "basic-flow",
+        "topLevel": false,
+        "builtIn": false,
+        "authenticationExecutions": [ {
+            "authenticatorConfig": "conditional-loa-substancial",
+            "authenticator": "conditional-level-of-authentication",
+            "authenticatorFlow": false,
+            "requirement": "REQUIRED",
+            "priority": 1,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        }, {
+            "authenticatorFlow": true,
+            "requirement": "CONDITIONAL",
+            "priority": 2,
+            "autheticatorFlow": true,
+            "flowAlias": "LoA BAIXO > SUBSTANCIAL",
+            "userSetupAllowed": false
+        }, {
+            "authenticatorFlow": true,
+            "requirement": "CONDITIONAL",
+            "priority": 3,
+            "autheticatorFlow": true,
+            "flowAlias": "LoA SUBSTANCIAL - Fluxo Padrão",
+            "userSetupAllowed": false
+        } ]
+    }, {
+        "alias": "LoA BAIXO > SUBSTANCIAL",
+        "description": "Fluxo de elevação do LoA (usuário com LoA BAIXO precisa elevar o LoA para SUBSTANCIAL)",
+        "providerId": "basic-flow",
+        "topLevel": false,
+        "builtIn": false,
+        "authenticationExecutions": [ {
+            "authenticatorConfig": "conditional-user-loa-baixo",
+            "authenticator": "conditional-user-loa",
+            "authenticatorFlow": false,
+            "requirement": "REQUIRED",
+            "priority": 1,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        }, {
+            "authenticatorConfig": "facial-biometrics",
+            "authenticator": "facial-biometric-authenticator",
+            "authenticatorFlow": false,
+            "requirement": "ALTERNATIVE",
+            "priority": 2,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        } ]
+    }, {
+        "alias": "LoA SUBSTANCIAL - Fluxo Padrão",
+        "description": "Fluxo padrão de autenticação para o LoA SUBSTANCIAL",
+        "providerId": "basic-flow",
+        "topLevel": false,
+        "builtIn": false,
+        "authenticationExecutions": [ {
+            "authenticatorConfig": "conditional-user-loa-substancial-alto",
+            "authenticator": "conditional-user-loa",
+            "authenticatorFlow": false,
+            "requirement": "REQUIRED",
+            "priority": 1,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        }, {
+            "authenticatorConfig": "try-another",
+            "authenticator": "try-another-redirect",
+            "authenticatorFlow": false,
+            "requirement": "ALTERNATIVE",
+            "priority": 2,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        }, {
+            "authenticatorConfig": "email-authentication",
+            "authenticator": "email-reg-auth",
+            "authenticatorFlow": false,
+            "requirement": "ALTERNATIVE",
+            "priority": 3,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        }, {
+            "authenticatorConfig": "sms-authentication",
+            "authenticator": "mobile-number-reg-auth",
+            "authenticatorFlow": false,
+            "requirement": "ALTERNATIVE",
+            "priority": 4,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        }, {
+            "authenticatorConfig": "facial-biometrics-1",
+            "authenticator": "facial-biometric-authenticator",
+            "authenticatorFlow": false,
+            "requirement": "ALTERNATIVE",
+            "priority": 5,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        } ]
+    }, {
+        "alias": "LoA ALTO",
+        "description": "Fluxo de autenticação cujo LoA solicitado foi ALTO",
+        "providerId": "basic-flow",
+        "topLevel": false,
+        "builtIn": false,
+        "authenticationExecutions": [ {
+            "authenticatorConfig": "conditional-loa-alto",
+            "authenticator": "conditional-level-of-authentication",
+            "authenticatorFlow": false,
+            "requirement": "REQUIRED",
+            "priority": 1,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        }, {
+            "authenticatorFlow": true,
+            "requirement": "CONDITIONAL",
+            "priority": 2,
+            "autheticatorFlow": true,
+            "flowAlias": "LoA BAIXO-SUBSTANCIAL > ALTO",
+            "userSetupAllowed": false
+        }, {
+            "authenticatorFlow": true,
+            "requirement": "CONDITIONAL",
+            "priority": 3,
+            "autheticatorFlow": true,
+            "flowAlias": "LoA ALTO - Fluxo Padrão",
+            "userSetupAllowed": false
+        } ]
+    }, {
+        "alias": "LoA BAIXO-SUBSTANCIAL > ALTO",
+        "description": "Fluxo onde o usuário tem LoA BAIXO ou SUBSTANCIAL e acessa um sistema que exige LoA ALTO",
+        "providerId": "basic-flow",
+        "topLevel": false,
+        "builtIn": false,
+        "authenticationExecutions": [ {
+            "authenticatorConfig": "conditional-user-loa-baixo-substancial",
+            "authenticator": "conditional-user-loa",
+            "authenticatorFlow": false,
+            "requirement": "REQUIRED",
+            "priority": 1,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        }, {
+            "authenticatorConfig": "deny-loa-alto",
+            "authenticator": "deny-access-authenticator",
+            "authenticatorFlow": false,
+            "requirement": "REQUIRED",
+            "priority": 2,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        } ]
+    }, {
+        "alias": "LoA ALTO - Fluxo Padrão",
+        "description": "Fluxo padrão de autenticação para o LoA ALTO",
+        "providerId": "basic-flow",
+        "topLevel": false,
+        "builtIn": false,
+        "authenticationExecutions": [ {
+            "authenticatorConfig": "conditional-user-loa-alto",
+            "authenticator": "conditional-user-loa",
+            "authenticatorFlow": false,
+            "requirement": "REQUIRED",
+            "priority": 1,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        }, {
+            "authenticatorConfig": "facial-biometrics-2",
+            "authenticator": "facial-biometric-authenticator",
+            "authenticatorFlow": false,
+            "requirement": "REQUIRED",
+            "priority": 2,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        } ]
+    }, {
+        "alias": "Playground Registration Flow",
+        "description": "Registration flow",
+        "providerId": "basic-flow",
+        "topLevel": true,
+        "builtIn": false,
+        "authenticationExecutions": [ {
+            "authenticatorConfig": "facial-biometrics-3",
+            "authenticator": "facial-biometric-authenticator",
+            "authenticatorFlow": false,
+            "requirement": "DISABLED",
+            "priority": 1,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        }, {
+            "authenticatorFlow": true,
+            "requirement": "REQUIRED",
+            "priority": 2,
+            "autheticatorFlow": true,
+            "flowAlias": "Registro de 2FA",
+            "userSetupAllowed": false
+        }, {
+            "authenticatorConfig": "password-registration",
+            "authenticator": "register-password",
+            "authenticatorFlow": false,
+            "requirement": "REQUIRED",
+            "priority": 3,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        } ]
+    }, {
+        "alias": "Registro de 2FA",
+        "description": "Fluxo de registro de 2FA",
+        "providerId": "basic-flow",
+        "topLevel": false,
+        "builtIn": false,
+        "authenticationExecutions": [ {
+            "authenticatorConfig": "try-another-2FA",
+            "authenticator": "try-another-redirect",
+            "authenticatorFlow": false,
+            "requirement": "ALTERNATIVE",
+            "priority": 1,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        }, {
+            "authenticatorConfig": "email-registration",
+            "authenticator": "email-reg-auth",
+            "authenticatorFlow": false,
+            "requirement": "ALTERNATIVE",
+            "priority": 2,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        }, {
+            "authenticatorConfig": "sms-registration",
+            "authenticator": "mobile-number-reg-auth",
+            "authenticatorFlow": false,
+            "requirement": "ALTERNATIVE",
+            "priority": 3,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        } ]
+    }, {
+        "alias": "Playground Reset Flow",
+        "description": "Reset credentials for a user if they forgot their password or something",
+        "providerId": "basic-flow",
+        "topLevel": true,
+        "builtIn": false,
+        "authenticationExecutions": [ {
+            "authenticator": "reset-credentials-choose-user",
+            "authenticatorFlow": false,
+            "requirement": "REQUIRED",
+            "priority": 1,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        }, {
+            "authenticatorFlow": true,
+            "requirement": "REQUIRED",
+            "priority": 2,
+            "autheticatorFlow": true,
+            "flowAlias": "Reset 2FA",
+            "userSetupAllowed": false
+        }, {
+            "authenticatorConfig": "password-reset",
+            "authenticator": "register-password",
+            "authenticatorFlow": false,
+            "requirement": "REQUIRED",
+            "priority": 3,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        }, {
+            "authenticator": "loa-reduction",
+            "authenticatorFlow": false,
+            "requirement": "REQUIRED",
+            "priority": 4,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        } ]
+    }, {
+        "alias": "Reset 2FA",
+        "description": "",
+        "providerId": "basic-flow",
+        "topLevel": false,
+        "builtIn": false,
+        "authenticationExecutions": [ {
+            "authenticatorConfig": "try-another-1",
+            "authenticator": "try-another-redirect",
+            "authenticatorFlow": false,
+            "requirement": "ALTERNATIVE",
+            "priority": 1,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        }, {
+            "authenticatorConfig": "facial-biometrics-4",
+            "authenticator": "facial-biometric-authenticator",
+            "authenticatorFlow": false,
+            "requirement": "ALTERNATIVE",
+            "priority": 2,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        }, {
+            "authenticatorConfig": "email-reset",
+            "authenticator": "email-reg-auth",
+            "authenticatorFlow": false,
+            "requirement": "ALTERNATIVE",
+            "priority": 3,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        }, {
+            "authenticatorConfig": "sms-reset",
+            "authenticator": "mobile-number-reg-auth",
+            "authenticatorFlow": false,
+            "requirement": "ALTERNATIVE",
+            "priority": 4,
+            "autheticatorFlow": false,
+            "userSetupAllowed": false
+        } ]
+    } ],
+    "users" : [ {
+        "username" : "47658292869",
+        "email" : "bredstone13@gmail.com",
+        "enabled" : true,
+        "emailVerified" : true,
+        "firstName" : "Brendon",
+        "lastName" : "Vicente Rocha Silva",
+        "credentials" : [ {
+            "type" : "password",
+            "value" : "123"
+        } ],
+        "attributes" : {
+            "celular" : [ "5548988441727" ]
+        }
+    } ],
+    "authenticatorConfig": [ {
+        "alias": "conditional-loa-baixo",
+        "config": {
+            "loa-condition-level": "1",
+            "loa-max-age": "36000"
+        }
+    }, {
+        "alias": "conditional-loa-substancial",
+        "config": {
+            "loa-condition-level": "100",
+            "loa-max-age": "36000"
+        }
+    }, {
+        "alias": "conditional-loa-alto",
+        "config": {
+            "loa-condition-level": "200",
+            "loa-max-age": "36000"
+        }
+    }, {
+        "alias": "conditional-user-loa-baixo",
+        "config": {
+            "user_loa": "BAIXO"
+        }
+    }, {
+        "alias": "conditional-user-loa-baixo-substancial",
+        "config": {
+            "user_loa": "BAIXO##SUBSTANCIAL"
+        }
+    }, {
+        "alias": "conditional-user-loa-substancial-alto",
+        "config": {
+            "user_loa": "SUBSTANCIAL##ALTO"
+        }
+    }, {
+        "alias": "conditional-user-loa-alto",
+        "config": {
+            "user_loa": "ALTO"
+        }
+    }, {
+        "alias": "try-another",
+        "config": {
+            "registration_2fa": "false"
+        }
+    }, {
+        "alias": "try-another-1",
+        "config": {
+            "registration_2fa": "false"
+        }
+    }, {
+        "alias": "try-another-2FA",
+        "config": {
+            "registration_2fa": "true"
+        }
+    }, {
+        "alias": "deny-loa-alto",
+        "config": {
+            "denyErrorMessage": "clientRequiresHighLOA"
+        }
+    }, {
+        "alias": "email-authentication",
+        "config": {
+            "default.reference.value": "email",
+            "default.reference.maxAge": "36000",
+            "otp_ttl": "300",
+            "otp_length": "6"
+        }
+    }, {
+        "alias": "email-registration",
+        "config": {
+            "default.reference.maxAge": "36000",
+            "default.reference.value": "email",
+            "otp_ttl": "300",
+            "otp_length": "6"
+        }
+    }, {
+        "alias": "email-reset",
+        "config": {
+            "default.reference.maxAge": "36000",
+            "default.reference.value": "email",
+            "otp_ttl": "300",
+            "otp_length": "6"
+        }
+    }, {
+        "alias": "facial-biometrics",
+        "config": {
+            "default.reference.value": "face",
+            "default.reference.maxAge": "36000",
+            "retries_number": "1000",
+            "confia_api_key": "$(env:FACIAL_BIOMETRICS_API_KEY)",
+            "confia_api_url": "$(env:FACIAL_BIOMETRICS_API_URL)",
+            "sleep_time": "500",
+            "confia_api_timeout": "10000"
+        }
+    }, {
+        "alias": "facial-biometrics-1",
+        "config": {
+            "default.reference.value": "face",
+            "default.reference.maxAge": "36000",
+            "retries_number": "1000",
+            "confia_api_key": "$(env:FACIAL_BIOMETRICS_API_KEY)",
+            "confia_api_url": "$(env:FACIAL_BIOMETRICS_API_URL)",
+            "sleep_time": "500",
+            "confia_api_timeout": "10000"
+        }
+    }, {
+        "alias": "facial-biometrics-2",
+        "config": {
+            "default.reference.value": "face",
+            "default.reference.maxAge": "36000",
+            "retries_number": "1000",
+            "confia_api_key": "$(env:FACIAL_BIOMETRICS_API_KEY)",
+            "confia_api_url": "$(env:FACIAL_BIOMETRICS_API_URL)",
+            "sleep_time": "500",
+            "confia_api_timeout": "10000"
+        }
+    }, {
+        "alias": "facial-biometrics-3",
+        "config": {
+            "default.reference.value": "face",
+            "default.reference.maxAge": "36000",
+            "retries_number": "1000",
+            "confia_api_key": "$(env:FACIAL_BIOMETRICS_API_KEY)",
+            "confia_api_url": "$(env:FACIAL_BIOMETRICS_API_URL)",
+            "sleep_time": "500",
+            "confia_api_timeout": "10000"
+        }
+    }, {
+        "alias": "facial-biometrics-4",
+        "config": {
+            "default.reference.value": "face",
+            "default.reference.maxAge": "36000",
+            "retries_number": "1000",
+            "confia_api_key": "$(env:FACIAL_BIOMETRICS_API_KEY)",
+            "confia_api_url": "$(env:FACIAL_BIOMETRICS_API_URL)",
+            "sleep_time": "500",
+            "confia_api_timeout": "10000"
+        }
+    }, {
+        "alias": "password-authentication",
+        "config": {
+            "default.reference.value": "pwd",
+            "default.reference.maxAge": "36000"
+        }
+    }, {
+        "alias": "password-registration",
+        "config": {
+            "default.reference.value": "pwd",
+            "default.reference.maxAge": "36000"
+        }
+    }, {
+        "alias": "password-reset",
+        "config": {
+            "default.reference.value": "pwd",
+            "default.reference.maxAge": "36000"
+        }
+    }, {
+        "alias": "sms-authentication",
+        "config": {
+            "default.reference.value": "sms",
+            "default.reference.maxAge": "36000",
+            "otp_ttl": "300",
+            "otp_length": "6",
+            "simulation": "true",
+            "access_key": "$(env:SMS_AUTHENTICATION_ACCESS_KEY)",
+            "secret_access_key": "$(env:SMS_AUTHENTICATION_SECRET_KEY)",
+            "region": "sa-east-1",
+            "sender_id": "Keycloak"
+        }
+    }, {
+        "alias": "sms-registration",
+        "config": {
+            "default.reference.value": "sms",
+            "default.reference.maxAge": "36000",
+            "otp_ttl": "300",
+            "otp_length": "6",
+            "simulation": "true",
+            "access_key": "$(env:SMS_AUTHENTICATION_ACCESS_KEY)",
+            "secret_access_key": "$(env:SMS_AUTHENTICATION_SECRET_KEY)",
+            "region": "sa-east-1",
+            "sender_id": "Keycloak"
+        }
+    }, {
+        "alias": "sms-reset",
+        "config": {
+            "default.reference.value": "sms",
+            "default.reference.maxAge": "36000",
+            "otp_ttl": "300",
+            "otp_length": "6",
+            "simulation": "true",
+            "access_key": "$(env:SMS_AUTHENTICATION_ACCESS_KEY)",
+            "secret_access_key": "$(env:SMS_AUTHENTICATION_SECRET_KEY)",
+            "region": "sa-east-1",
+            "sender_id": "Keycloak"
+        }
+    } ],
+    "userProfile": {
+        "attributes": [ {
+            "name": "username",
+            "displayName": "${username}",
+            "validations": {
+                "length": {
+                    "min": 11,
+                    "max": 11
+                },
+                "pattern": {
+                    "pattern": "[0-9]{11}",
+                    "error-message": "CPF inválido!"
+                },
+                "username-prohibited-characters": {}
+            }
+        }, {
+            "name": "email",
+            "displayName": "${email}",
+            "required": {
+                "roles": []
+            },
+            "permissions": {
+                "view": [
+                    "admin",
+                    "user"
+                ],
+                "edit": [
+                    "admin"
+                ]
+            },
+            "validations": {
+                "email": {},
+                "length": {
+                    "max": 255
+                }
+            }
+        }, {
+            "name": "firstName",
+            "displayName": "${firstName}",
+            "required": {
+                "roles": [
+                    "user"
+                ]
+            },
+            "permissions": {
+                "view": [
+                    "admin",
+                    "user"
+                ],
+                "edit": [
+                    "admin"
+                ]
+            },
+            "validations": {
+                "length": {
+                    "max": 255
+                },
+                "person-name-prohibited-characters": {}
+            }
+        }, {
+            "name": "lastName",
+            "displayName": "${lastName}",
+            "required": {
+                "roles": [
+                    "user"
+                ]
+            },
+            "permissions": {
+                "view": [
+                    "admin",
+                    "user"
+                ],
+                "edit": [
+                    "admin"
+                ]
+            },
+            "validations": {
+                "length": {
+                    "max": 255
+                },
+                "person-name-prohibited-characters": {}
+            }
+        }, {
+            "name": "formato_data_nascimento",
+            "displayName": "Formato da data de nascimento",
+            "permissions": {
+                "view": [
+                    "admin",
+                    "user"
+                ],
+                "edit": []
+            }
+        }, {
+            "name": "data_nascimento",
+            "displayName": "Data de nascimento",
+            "required": {
+                "roles": [
+                    "user"
+                ]
+            },
+            "permissions": {
+                "view": [
+                    "admin",
+                    "user"
+                ],
+                "edit": [
+                    "admin"
+                ]
+            },
+            "validations": {
+                "pattern": {
+                    "pattern": "([0-9]{2}/){2}[0-9]{4}",
+                    "error-message": "Data inválida!"
+                }
+            }
+        }, {
+            "name": "celular",
+            "displayName": "Celular",
+            "permissions": {
+                "view": [
+                    "admin",
+                    "user"
+                ],
+                "edit": [
+                    "admin"
+                ]
+            }
+        }, {
+            "name": "uf_nascimento",
+            "displayName": "Estado de Nascimento",
+            "permissions": {
+                "view": [
+                    "admin",
+                    "user"
+                ],
+                "edit": [
+                    "admin"
+                ]
+            },
+            "validations": {
+                "length": {
+                    "max": 2,
+                    "min": 2
+                },
+                "pattern": {
+                    "pattern": "[A-Z]{2}",
+                    "error-message": "Estado inválido!"
+                }
+            }
+        }, {
+            "name": "cidade_nascimento",
+            "displayName": "Cidade de Nascimento",
+            "permissions": {
+                "view": [
+                    "admin",
+                    "user"
+                ],
+                "edit": [
+                    "admin"
+                ]
+            },
+            "validations": {
+                "person-name-prohibited-characters": {}
+            }
+        }, {
+            "name": "pais_nascimento",
+            "displayName": "País de Nascimento",
+            "permissions": {
+                "view": [
+                    "admin",
+                    "user"
+                ],
+                "edit": [
+                    "admin"
+                ]
+            },
+            "validations": {
+                "person-name-prohibited-characters": {}
+            }
+        }, {
+            "name": "level_of_assurance",
+            "displayName": "Level of Assurance (LoA)",
+            "permissions": {
+                "view": [
+                    "admin"
+                ],
+                "edit": [
+                    "admin"
+                ]
+            }
+        } ]
+    }
+}

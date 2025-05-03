@@ -1,0 +1,113 @@
+#rc-footer *{
+    box-sizing: border-box;
+}
+#rc-footer a{
+    text-decoration: none;
+    color: unset;
+}
+
+#rc-footer{
+    background-color: #6c757d;
+    color: white;
+    padding: 40px 10%;
+    display: flex;
+    justify-content: space-between;
+
+}
+.rc-social-contacts{
+    padding: 0px 12px;
+    flex: 2 1 100%;
+}
+.rc-social-contacts__social{
+    padding-bottom: 24px;
+}
+.rc-social-contacts__social a{
+    font-size: 0;
+}
+.rc-social-contacts__social img{
+    height: 22px;
+    padding-right: 16px;
+    filter: invert(100%) sepia(0%) saturate(7484%) hue-rotate(246deg) brightness(102%) contrast(96%);
+    vertical-align: middle;
+    margin: 0;
+}
+.rc-social-contacts__social a:hover img{
+    filter: invert(72%) sepia(66%) saturate(456%) hue-rotate(133deg) brightness(82%) contrast(87%);
+}
+
+#rc-footer ul{
+    list-style-type: none;
+}
+#rc-footer ul li{
+    margin-top: 7px;
+    font-size: 12px;
+    line-height: 18px;
+}
+#rc-footer ul li:last-of-type{
+    margin-top: 16px;
+}
+.rc-sustained{
+    padding: 0 12px;
+    flex: 2 1 100%;
+    display: flex;
+    align-items:center;
+}
+.rc-sustained>div{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+}
+.rc-sustainer>span{
+    line-height: 18px;
+}
+.rc-sustainer img{
+    width: 100%;
+    vertical-align: middle;
+}
+.rc-sustained__arpen a img{
+    max-width: 200px;
+}
+.rc-sustained__cnj a img{
+    max-width: 120px;
+}
+
+.rc-sustained>div>span{
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+.rc-sustained>span{
+    height:75%;
+    border-right:3px solid #fff;
+    margin: auto 20px;
+}
+@media (max-width: 992px)
+{
+    #rc-footer{
+        flex-direction: column;
+        align-items: center;
+    }
+    .rc-social-contacts__social{
+        display: flex;
+        justify-content: center;
+        margin-top: 16px
+    }
+    .rc-social-contacts__social  img{
+        padding: 0 8px;
+    }
+    #rc-footer ul{
+        text-align: center;
+    }
+    .rc-sustained{
+        max-width: 100%;
+        margin-top: 32px;
+    }
+    .rc-sustained>span{
+        height:95px;
+    }
+    #kc-content{
+        margin: 40px 0;
+    }
+
+}
