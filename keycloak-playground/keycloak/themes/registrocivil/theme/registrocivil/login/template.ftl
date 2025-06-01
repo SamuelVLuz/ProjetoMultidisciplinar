@@ -106,6 +106,9 @@
                                         </div>
                                     </a>
                                 </div>
+                                </div>
+                                    <hr/><p id="test_password">Teste</p><hr/>
+                                <div>
                             </div>
                         </div>
                     <#else>
@@ -124,7 +127,6 @@
             </header>
             <div id="kc-content">
                 <div id="kc-content-wrapper">
-
                     <#-- App-initiated actions should not see warning messages about the need to complete the action -->
                     <#-- during login.                                                                               -->
                     <#if displayMessage && message?has_content && (message.type != 'warning' || !isAppInitiatedAction??)>

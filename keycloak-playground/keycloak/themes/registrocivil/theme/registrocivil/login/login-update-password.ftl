@@ -13,7 +13,6 @@
                     <label for="password-new" class="${properties.kcLabelClass!}">${msg("passwordNew")}</label>
                 </div>
                 <div class="${properties.kcInputWrapperClass!}">
-                
                     <div class="password-container ${properties.kcInputGroup!}" style="display: flex; align-items: center; ">
                         <input tabindex="2" id="password-new" class="${properties.kcInputClass!}" name="password-new"
                             type="password" autocomplete="on" autofocus
@@ -42,7 +41,6 @@
                     <label for="password-confirm" class="${properties.kcLabelClass!}">${msg("passwordConfirm")}</label>
                 </div>
                 <div class="${properties.kcInputWrapperClass!}">
-                
                     <div class="password-container ${properties.kcInputGroup!}" style="display: flex; align-items: center;">
                         <input tabindex="2" type="password" id="password-confirm" name="password-confirm"
                            class="${properties.kcInputClass!}"
