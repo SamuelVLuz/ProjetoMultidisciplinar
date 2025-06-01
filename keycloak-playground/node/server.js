@@ -5,7 +5,16 @@ const cors = require('cors');
 const app = express();
 const port = 3000;
 
+app.use(cors({
+  origin: 'http://localhost:8080',
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type'],
+  credentials: true
+}));
+
 app.use(express.json());
+
+app.options('*', cors());
 
 // Configure DB connection
 const pool = mysql.createPool({
@@ -37,14 +46,16 @@ app.post('/percentile', async (req, res) => {
   try {
     const [rows] = await pool.query('SELECT entropy FROM entropy_stats');
     const entropies = rows.map(r => r.entropy);
-    const average = entropies.reduce((a, b) => a + b, 0) / entropies.length;
 
-    const percentile = (entropy / average) * 100;
-    res.json({ percentile: percentile.toFixed(2), average: average.toFixed(2) });
+    const countBelow = entropies.filter(e => e < entropy).length;
+    const percentile = (countBelow / entropies.length) * 100;
+
+    res.json({ percentile: percentile.toFixed(2) });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 // Add new entropy (optional)
 app.post('/entropy', async (req, res) => {
